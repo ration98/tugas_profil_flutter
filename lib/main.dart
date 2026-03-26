@@ -46,11 +46,11 @@ class HomePage extends StatelessWidget {
         videoPath: "assets/videos/vid_perkenalan.mp4",
       ),
       Member(
-        name: "Nama Teman 2",
-        nim: "01020305",
+        name: "Mirfa Nanda  Syahiratia",
+        nim: "0112524018",
         bio: "Hobi bermain musik dan belajar pemrograman mobile.",
-        imagePath: "assets/images/teman2.jpg",
-        videoPath: "assets/videos/video2.mp4",
+        imagePath: "assets/images/mirfa.jpeg",
+        videoPath: "assets/videos/vid_mirfa.mp4",
       ),
       Member(
         name: "Nama Teman 3",
