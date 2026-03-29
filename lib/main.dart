@@ -11,11 +11,11 @@ class Member {
   final String videoPath;
 
   Member({
-    required this.name, 
-    required this.nim, 
-    required this.bio, 
-    required this.imagePath, 
-    required this.videoPath
+    required this.name,
+    required this.nim,
+    required this.bio,
+    required this.imagePath,
+    required this.videoPath,
   });
 }
 
@@ -53,15 +53,15 @@ class HomePage extends StatelessWidget {
         videoPath: "assets/videos/vid_mirfa.mp4",
       ),
       Member(
-        name: "Nama Teman 3",
-        nim: "01020306",
-        bio: "Hobi fotografi dan desain UI/UX.",
-        imagePath: "assets/images/teman3.jpg",
-        videoPath: "assets/videos/video3.mp4",
+        name: "Adhima Tenripoliwati",
+        nim: "0112523002",
+        bio: "Berolahraga, membaca buku dan menulis.",
+        imagePath: "assets/images/adhimatenri.jpg",
+        videoPath: "assets/videos/vid_adhimatenri.mp4",
       ),
       Member(
-        name: "Nama Teman 4",
-        nim: "01020307",
+        name: "Tio Anggie Hizbullah",
+        nim: "0112523000",
         bio: "Hobi berenang dan berkebun.",
         imagePath: "assets/images/teman4.jpg",
         videoPath: "assets/videos/video4.mp4",
@@ -69,7 +69,10 @@ class HomePage extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Kelompok Flutter"), centerTitle: true),
+      appBar: AppBar(
+        title: const Text("Kelompok 8 - Mobile Programming"),
+        centerTitle: true,
+      ),
       body: ListView.builder(
         itemCount: members.length,
         itemExtent: 100,
@@ -77,14 +80,22 @@ class HomePage extends StatelessWidget {
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             child: ListTile(
-              leading: CircleAvatar(backgroundImage: AssetImage(members[index].imagePath)),
-              title: Text(members[index].name, style: const TextStyle(fontWeight: FontWeight.bold)),
+              leading: CircleAvatar(
+                backgroundImage: AssetImage(members[index].imagePath),
+              ),
+              title: Text(
+                members[index].name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
               subtitle: Text("NIM: ${members[index].nim}"),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfileDetailPage(member: members[index])),
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ProfileDetailPage(member: members[index]),
+                  ),
                 );
               },
             ),
@@ -104,28 +115,40 @@ class ProfileDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("Profil ${member.name}")),
       body: SingleChildScrollView(
-        child: Center( // Ditambahkan agar isi Column bisa benar-benar di tengah
+        child: Center(
+          // Ditambahkan agar isi Column bisa benar-benar di tengah
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, // Pusatkan secara vertikal
-            crossAxisAlignment: CrossAxisAlignment.center, // Pusatkan secara horizontal
+            mainAxisAlignment:
+                MainAxisAlignment.center, // Pusatkan secara vertikal
+            crossAxisAlignment:
+                CrossAxisAlignment.center, // Pusatkan secara horizontal
             children: [
               const SizedBox(height: 30),
-              CircleAvatar(radius: 80, backgroundImage: AssetImage(member.imagePath)),
+              CircleAvatar(
+                radius: 80,
+                backgroundImage: AssetImage(member.imagePath),
+              ),
               const SizedBox(height: 20),
               Text(
-                member.name, 
+                member.name,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
-                "NIM: ${member.nim}", 
+                "NIM: ${member.nim}",
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16, color: Colors.grey)
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30.0,
+                  vertical: 20.0,
+                ),
                 child: Text(
-                  member.bio, 
+                  member.bio,
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 16),
                 ),
@@ -135,13 +158,19 @@ class ProfileDetailPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => VideoPlayerPage(videoPath: member.videoPath)),
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          VideoPlayerPage(videoPath: member.videoPath),
+                    ),
                   );
                 },
                 icon: const Icon(Icons.play_circle_fill),
                 label: const Text("Tonton Video Perkenalan"),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
@@ -185,7 +214,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text("Preview Video"), 
+        title: const Text("Preview Video"),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
@@ -200,10 +229,14 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            _controller.value.isPlaying ? _controller.pause() : _controller.play();
+            _controller.value.isPlaying
+                ? _controller.pause()
+                : _controller.play();
           });
         },
-        child: Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow),
+        child: Icon(
+          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+        ),
       ),
     );
   }
