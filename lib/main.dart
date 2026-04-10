@@ -61,10 +61,10 @@ class HomePage extends StatelessWidget {
       ),
       Member(
         name: "Tio Anggie Hizbullah",
-        nim: "0112523000",
-        bio: "Hobi berenang dan berkebun.",
-        imagePath: "assets/images/teman4.jpg",
-        videoPath: "assets/videos/video4.mp4",
+        nim: "0112523042",
+        bio: "Troubleshooter and troublemaker | You can't grow in a trouble-free environment.",
+        imagePath: "assets/images/tio.png",
+        videoPath: "assets/videos/vid_tio.mp4",
       ),
     ];
 
