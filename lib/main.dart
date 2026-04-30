@@ -43,32 +43,22 @@ class MainMenuPage extends StatelessWidget {
         title: const Text("Kelompok 8 - Mobile Programming"),
         centerTitle: true,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.school,
-                size: 80,
-                color: Colors.green,
-              ),
+              const Icon(Icons.school, size: 80, color: Colors.green),
               const SizedBox(height: 20),
               const Text(
                 "Selamat Datang",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               const Text(
                 "Pilih Menu",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               const SizedBox(height: 50),
               _buildMenuCard(
@@ -94,7 +84,9 @@ class MainMenuPage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const TugasRumusPage()),
+                    MaterialPageRoute(
+                      builder: (context) => const TugasRumusPage(),
+                    ),
                   );
                 },
               ),
@@ -108,7 +100,37 @@ class MainMenuPage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const PollingMenuPage()),
+                    MaterialPageRoute(
+                      builder: (context) => const PollingMenuPage(),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              _buildMenuCard(
+                context,
+                title: "Max & Min",
+                subtitle: "Temukan nilai maksimum dan minimum dari 2 bilangan",
+                icon: Icons.compare_arrows,
+                color: Colors.red,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MaxMinPage()),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              _buildMenuCard(
+                context,
+                title: "Diskon",
+                subtitle: "Hitung diskon dengan Nested IF & Switch Case",
+                icon: Icons.local_offer,
+                color: Colors.deepPurple,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const DiskonPage()),
                   );
                 },
               ),
@@ -140,14 +162,9 @@ class MainMenuPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(
-                  icon,
-                  size: 40,
-                  color: color,
-                ),
+                child: Icon(icon, size: 40, color: color),
               ),
               const SizedBox(width: 20),
               Expanded(
@@ -164,10 +181,7 @@ class MainMenuPage extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -211,7 +225,8 @@ class HomePage extends StatelessWidget {
       Member(
         name: "Tio Anggie Hizbullah",
         nim: "0112523042",
-        bio: "Troubleshooter and troublemaker | You can't grow in a trouble-free environment.",
+        bio:
+            "Troubleshooter and troublemaker | You can't grow in a trouble-free environment.",
         imagePath: "assets/images/tio.png",
         videoPath: "assets/videos/vid_tio.mp4",
       ),
@@ -265,12 +280,9 @@ class ProfileDetailPage extends StatelessWidget {
       appBar: AppBar(title: Text("Profil ${member.name}")),
       body: SingleChildScrollView(
         child: Center(
-          // Ditambahkan agar isi Column bisa benar-benar di tengah
           child: Column(
-            mainAxisAlignment:
-                MainAxisAlignment.center, // Pusatkan secara vertikal
-            crossAxisAlignment:
-                CrossAxisAlignment.center, // Pusatkan secara horizontal
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 30),
               CircleAvatar(
@@ -347,7 +359,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     super.initState();
     _controller = VideoPlayerController.asset(widget.videoPath)
       ..initialize().then((_) {
-        // Memastikan frame pertama muncul
         setState(() {});
       });
   }
@@ -397,10 +408,7 @@ class TugasRumusPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Tugas Rumus"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text("Tugas Rumus"), centerTitle: true),
       body: GridView.count(
         crossAxisCount: 2,
         padding: const EdgeInsets.all(16),
@@ -444,7 +452,9 @@ class TugasRumusPage extends StatelessWidget {
             Colors.purple,
             () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const LuasLingkaranPage()),
+              MaterialPageRoute(
+                builder: (context) => const LuasLingkaranPage(),
+              ),
             ),
           ),
         ],
@@ -471,10 +481,7 @@ class TugasRumusPage extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -551,10 +558,7 @@ class _LuasSegitigaPageState extends State<LuasSegitigaPage> {
               ),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _calculate,
-              child: const Text('Hitung'),
-            ),
+            ElevatedButton(onPressed: _calculate, child: const Text('Hitung')),
             const SizedBox(height: 24),
             Text(
               _result,
@@ -636,10 +640,7 @@ class _IsiTabungPageState extends State<IsiTabungPage> {
               ),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _calculate,
-              child: const Text('Hitung'),
-            ),
+            ElevatedButton(onPressed: _calculate, child: const Text('Hitung')),
             const SizedBox(height: 24),
             Text(
               _result,
@@ -709,10 +710,7 @@ class _LuasKotakPageState extends State<LuasKotakPage> {
               ),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _calculate,
-              child: const Text('Hitung'),
-            ),
+            ElevatedButton(onPressed: _calculate, child: const Text('Hitung')),
             const SizedBox(height: 24),
             Text(
               _result,
@@ -782,10 +780,7 @@ class _LuasLingkaranPageState extends State<LuasLingkaranPage> {
               ),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _calculate,
-              child: const Text('Hitung'),
-            ),
+            ElevatedButton(onPressed: _calculate, child: const Text('Hitung')),
             const SizedBox(height: 24),
             Text(
               _result,
@@ -805,49 +800,48 @@ class PollingMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Polling Menu"),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.poll,
-              size: 80,
-              color: Colors.orange,
-            ),
-            const SizedBox(height: 40),
-            _buildSubmenuCard(
-              context,
-              title: "Quesioner",
-              subtitle: "Kuis dengan pilihan jawaban",
-              icon: Icons.quiz,
-              color: Colors.purple,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const QuestionerPage()),
-                );
-              },
-            ),
-            const SizedBox(height: 20),
-            _buildSubmenuCard(
-              context,
-              title: "Polling Hobi Olahraga",
-              subtitle: "Vote hobi olahraga favorit",
-              icon: Icons.sports_soccer,
-              color: Colors.teal,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const PollingPage()),
-                );
-              },
-            ),
-          ],
+      appBar: AppBar(title: const Text("Polling Menu"), centerTitle: true),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.poll, size: 80, color: Colors.orange),
+              const SizedBox(height: 40),
+              _buildSubmenuCard(
+                context,
+                title: "Quesioner",
+                subtitle: "Kuis dengan pilihan jawaban",
+                icon: Icons.quiz,
+                color: Colors.purple,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const QuestionerPage(),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              _buildSubmenuCard(
+                context,
+                title: "Polling Hobi Olahraga",
+                subtitle: "Vote hobi olahraga favorit",
+                icon: Icons.sports_soccer,
+                color: Colors.teal,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PollingPage(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -874,14 +868,9 @@ class PollingMenuPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(
-                  icon,
-                  size: 40,
-                  color: color,
-                ),
+                child: Icon(icon, size: 40, color: color),
               ),
               const SizedBox(width: 20),
               Expanded(
@@ -898,10 +887,7 @@ class PollingMenuPage extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -963,10 +949,7 @@ class _QuestionerPageState extends State<QuestionerPage> {
         title: const Text("Quesioner"),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _resetQuiz,
-          ),
+          IconButton(icon: const Icon(Icons.refresh), onPressed: _resetQuiz),
         ],
       ),
       body: SingleChildScrollView(
@@ -1002,7 +985,9 @@ class _QuestionerPageState extends State<QuestionerPage> {
                     _buildSingleChoiceOption(4, "Kotlin"),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: _selectedSingleAnswer == null ? null : _checkSingleAnswer,
+                      onPressed: _selectedSingleAnswer == null
+                          ? null
+                          : _checkSingleAnswer,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.purple,
                         foregroundColor: Colors.white,
@@ -1025,7 +1010,8 @@ class _QuestionerPageState extends State<QuestionerPage> {
                               _selectedSingleAnswer == _correctSingleAnswer
                                   ? Icons.check_circle
                                   : Icons.cancel,
-                              color: _selectedSingleAnswer == _correctSingleAnswer
+                              color:
+                                  _selectedSingleAnswer == _correctSingleAnswer
                                   ? Colors.green
                                   : Colors.red,
                             ),
@@ -1037,7 +1023,9 @@ class _QuestionerPageState extends State<QuestionerPage> {
                                     : "Salah! Jawaban yang benar adalah: Dart",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: _selectedSingleAnswer == _correctSingleAnswer
+                                  color:
+                                      _selectedSingleAnswer ==
+                                          _correctSingleAnswer
                                       ? Colors.green.shade900
                                       : Colors.red.shade900,
                                 ),
@@ -1080,7 +1068,9 @@ class _QuestionerPageState extends State<QuestionerPage> {
                     _buildMultipleChoiceOption(4, "Slider"),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: _selectedMultipleAnswers.isEmpty ? null : _checkMultipleAnswers,
+                      onPressed: _selectedMultipleAnswers.isEmpty
+                          ? null
+                          : _checkMultipleAnswers,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.teal,
                         foregroundColor: Colors.white,
@@ -1092,34 +1082,57 @@ class _QuestionerPageState extends State<QuestionerPage> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: _selectedMultipleAnswers.containsAll(_correctMultipleAnswers) &&
-                                  _correctMultipleAnswers.containsAll(_selectedMultipleAnswers)
+                          color:
+                              _selectedMultipleAnswers.containsAll(
+                                    _correctMultipleAnswers,
+                                  ) &&
+                                  _correctMultipleAnswers.containsAll(
+                                    _selectedMultipleAnswers,
+                                  )
                               ? Colors.green.shade100
                               : Colors.red.shade100,
                         ),
                         child: Row(
                           children: [
                             Icon(
-                              _selectedMultipleAnswers.containsAll(_correctMultipleAnswers) &&
-                                      _correctMultipleAnswers.containsAll(_selectedMultipleAnswers)
+                              _selectedMultipleAnswers.containsAll(
+                                        _correctMultipleAnswers,
+                                      ) &&
+                                      _correctMultipleAnswers.containsAll(
+                                        _selectedMultipleAnswers,
+                                      )
                                   ? Icons.check_circle
                                   : Icons.cancel,
-                              color: _selectedMultipleAnswers.containsAll(_correctMultipleAnswers) &&
-                                      _correctMultipleAnswers.containsAll(_selectedMultipleAnswers)
+                              color:
+                                  _selectedMultipleAnswers.containsAll(
+                                        _correctMultipleAnswers,
+                                      ) &&
+                                      _correctMultipleAnswers.containsAll(
+                                        _selectedMultipleAnswers,
+                                      )
                                   ? Colors.green
                                   : Colors.red,
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
-                                _selectedMultipleAnswers.containsAll(_correctMultipleAnswers) &&
-                                        _correctMultipleAnswers.containsAll(_selectedMultipleAnswers)
+                                _selectedMultipleAnswers.containsAll(
+                                          _correctMultipleAnswers,
+                                        ) &&
+                                        _correctMultipleAnswers.containsAll(
+                                          _selectedMultipleAnswers,
+                                        )
                                     ? "Benar! Jawabannya adalah Text dan Icon"
                                     : "Salah! Jawaban yang benar adalah: Text dan Icon",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: _selectedMultipleAnswers.containsAll(_correctMultipleAnswers) &&
-                                          _correctMultipleAnswers.containsAll(_selectedMultipleAnswers)
+                                  color:
+                                      _selectedMultipleAnswers.containsAll(
+                                            _correctMultipleAnswers,
+                                          ) &&
+                                          _correctMultipleAnswers.containsAll(
+                                            _selectedMultipleAnswers,
+                                          )
                                       ? Colors.green.shade900
                                       : Colors.red.shade900,
                                 ),
@@ -1257,10 +1270,7 @@ class _PollingPageState extends State<PollingPage> {
         title: const Text("Polling Hobi Olahraga"),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _resetPolling,
-          ),
+          IconButton(icon: const Icon(Icons.refresh), onPressed: _resetPolling),
         ],
       ),
       body: _isLoading
@@ -1307,7 +1317,10 @@ class _PollingPageState extends State<PollingPage> {
                   if (!_hasVoted) ...[
                     const Text(
                       "Pilih olahraga favorit Anda:",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 15),
                     ..._votes.keys.map((sport) => _buildSportOption(sport)),
@@ -1325,10 +1338,15 @@ class _PollingPageState extends State<PollingPage> {
                   ] else ...[
                     const Text(
                       "Hasil Polling:",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 15),
-                    ..._votes.entries.map((entry) => _buildResultBar(entry.key, entry.value)),
+                    ..._votes.entries.map(
+                      (entry) => _buildResultBar(entry.key, entry.value),
+                    ),
                     const SizedBox(height: 20),
                     Container(
                       padding: const EdgeInsets.all(12),
@@ -1363,10 +1381,7 @@ class _PollingPageState extends State<PollingPage> {
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
       child: RadioListTile<String>(
-        title: Text(
-          sport,
-          style: const TextStyle(fontSize: 16),
-        ),
+        title: Text(sport, style: const TextStyle(fontSize: 16)),
         value: sport,
         groupValue: _selectedSport,
         onChanged: (value) {
@@ -1381,7 +1396,8 @@ class _PollingPageState extends State<PollingPage> {
 
   Widget _buildResultBar(String sport, int votes) {
     final percentage = _totalVotes > 0 ? (votes / _totalVotes * 100) : 0.0;
-    final isWinner = votes > 0 && votes == _votes.values.reduce((a, b) => a > b ? a : b);
+    final isWinner =
+        votes > 0 && votes == _votes.values.reduce((a, b) => a > b ? a : b);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -1399,21 +1415,24 @@ class _PollingPageState extends State<PollingPage> {
                       sport,
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: isWinner ? FontWeight.bold : FontWeight.normal,
+                        fontWeight: isWinner
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                     ),
                     if (isWinner) ...[
                       const SizedBox(width: 5),
-                      const Icon(Icons.emoji_events, color: Colors.amber, size: 20),
+                      const Icon(
+                        Icons.emoji_events,
+                        color: Colors.amber,
+                        size: 20,
+                      ),
                     ],
                   ],
                 ),
                 Text(
                   "$votes votes (${percentage.toStringAsFixed(1)}%)",
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               ],
             ),
@@ -1436,5 +1455,627 @@ class _PollingPageState extends State<PollingPage> {
   }
 }
 
+// ==================== FITUR MAX & MIN (2 BILANGAN DENGAN IF) ====================
+class MaxMinPage extends StatefulWidget {
+  const MaxMinPage({super.key});
 
+  @override
+  State<MaxMinPage> createState() => _MaxMinPageState();
+}
 
+class _MaxMinPageState extends State<MaxMinPage> {
+  final TextEditingController _bilangan1Controller = TextEditingController();
+  final TextEditingController _bilangan2Controller = TextEditingController();
+  String _result = '';
+
+  void _findMaxMin() {
+    String bil1Str = _bilangan1Controller.text.trim();
+    String bil2Str = _bilangan2Controller.text.trim();
+
+    if (bil1Str.isEmpty || bil2Str.isEmpty) {
+      setState(() {
+        _result = 'Masukkan kedua bilangan terlebih dahulu!';
+      });
+      return;
+    }
+
+    double? bil1 = double.tryParse(bil1Str);
+    double? bil2 = double.tryParse(bil2Str);
+
+    if (bil1 == null || bil2 == null) {
+      setState(() {
+        _result = 'Masukkan angka yang valid!';
+      });
+      return;
+    }
+
+    // Menggunakan IF untuk menentukan nilai maksimal dan minimal
+    if (bil1 > bil2) {
+      setState(() {
+        _result =
+            'Bilangan 1: $bil1\n'
+            'Bilangan 2: $bil2\n\n'
+            'Ya, Bilangan 1 lebih besar dari Bilangan 2\n'
+            'Nilai Maksimum: $bil1\n'
+            'Nilai Minimum: $bil2\n'
+            'Selisih (Max - Min): ${(bil1 - bil2).toStringAsFixed(2)}';
+      });
+    } else if (bil2 > bil1) {
+      setState(() {
+        _result =
+            'Bilangan 1: $bil1\n'
+            'Bilangan 2: $bil2\n\n'
+            'Ya, Bilangan 2 lebih besar dari Bilangan 1\n'
+            'Nilai Maksimum: $bil2\n'
+            'Nilai Minimum: $bil1\n'
+            'Selisih (Max - Min): ${(bil2 - bil1).toStringAsFixed(2)}';
+      });
+    } else {
+      setState(() {
+        _result =
+            'Bilangan 1: $bil1\n'
+            'Bilangan 2: $bil2\n\n'
+            'Kedua bilangan memiliki nilai yang sama yaitu $bil1\n'
+            'Nilai Maksimum: $bil1\n'
+            'Nilai Minimum: $bil1\n'
+            'Selisih (Max - Min): 0';
+      });
+    }
+  }
+
+  void _clearInput() {
+    _bilangan1Controller.clear();
+    _bilangan2Controller.clear();
+    setState(() {
+      _result = '';
+    });
+  }
+
+  @override
+  void dispose() {
+    _bilangan1Controller.dispose();
+    _bilangan2Controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Max & Min - Menentukan Nilai Terbesar & Terkecil"),
+        centerTitle: true,
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Card(
+              elevation: 4,
+              color: Colors.red.shade50,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.compare_arrows,
+                      size: 60,
+                      color: Colors.red,
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      "Menentukan Nilai Maksimum & Minimum",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 5),
+                    const Text(
+                      "Masukkan 2 bilangan untuk dibandingkan",
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "Bilangan 1:",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _bilangan1Controller,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                hintText: 'Masukkan bilangan pertama',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.looks_one),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "Bilangan 2:",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _bilangan2Controller,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                hintText: 'Masukkan bilangan kedua',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.looks_two),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _findMaxMin,
+                    icon: const Icon(Icons.compare),
+                    label: const Text("Bandingkan"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _clearInput,
+                    icon: const Icon(Icons.refresh),
+                    label: const Text("Reset"),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            if (_result.isNotEmpty) ...[
+              Card(
+                elevation: 2,
+                color: Colors.grey.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Hasil Perbandingan:",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade50,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          _result,
+                          style: const TextStyle(fontSize: 14, height: 1.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ==================== FITUR DISKON ====================
+class DiskonPage extends StatefulWidget {
+  const DiskonPage({super.key});
+
+  @override
+  State<DiskonPage> createState() => _DiskonPageState();
+}
+
+class _DiskonPageState extends State<DiskonPage> {
+  final TextEditingController _hargaController = TextEditingController();
+  String _result = '';
+  String _metodePerhitungan = 'Nested IF';
+
+  List<Map<String, dynamic>> _history = [];
+
+  // Nested IF
+  double _hitungDiskonNestedIF(double hargaAwal) {
+    double persenDiskon;
+
+    if (hargaAwal > 1500000) {
+      persenDiskon = 30;
+    } else {
+      if (hargaAwal >= 1000000) {
+        persenDiskon = 20;
+      } else {
+        if (hargaAwal >= 500000) {
+          persenDiskon = 10;
+        } else {
+          persenDiskon = 0;
+        }
+      }
+    }
+
+    return persenDiskon;
+  }
+
+  // Switch Case
+  double _hitungDiskonSwitchCase(double hargaAwal) {
+    int range;
+
+    if (hargaAwal > 1500000) {
+      range = 4;
+    } else if (hargaAwal >= 1000000) {
+      range = 3;
+    } else if (hargaAwal >= 500000) {
+      range = 2;
+    } else {
+      range = 1;
+    }
+
+    switch (range) {
+      case 4:
+        return 30;
+      case 3:
+        return 20;
+      case 2:
+        return 10;
+      case 1:
+        return 0;
+      default:
+        return 0;
+    }
+  }
+
+  void _calculateDiskon() {
+    final hargaAwal = double.tryParse(_hargaController.text);
+
+    if (hargaAwal != null && hargaAwal > 0) {
+      double persenDiskon;
+
+      if (_metodePerhitungan == 'Nested IF') {
+        persenDiskon = _hitungDiskonNestedIF(hargaAwal);
+      } else {
+        persenDiskon = _hitungDiskonSwitchCase(hargaAwal);
+      }
+
+      double diskon = hargaAwal * (persenDiskon / 100);
+      double hargaSetelahDiskon = hargaAwal - diskon;
+
+      String keteranganDiskon;
+      if (persenDiskon == 30) {
+        keteranganDiskon = "Pembelian > Rp 1.500.000";
+      } else if (persenDiskon == 20) {
+        keteranganDiskon = "Pembelian Rp 1.000.000 - Rp 1.500.000";
+      } else if (persenDiskon == 10) {
+        keteranganDiskon = "Pembelian Rp 500.000 - Rp 1.000.000";
+      } else {
+        keteranganDiskon = "Pembelian < Rp 500.000 (Tidak mendapat diskon)";
+      }
+
+      _history.insert(0, {
+        'hargaAwal': hargaAwal,
+        'diskonPersen': persenDiskon,
+        'hargaSetelahDiskon': hargaSetelahDiskon,
+        'penghematan': diskon,
+        'keterangan': keteranganDiskon,
+        'metode': _metodePerhitungan,
+      });
+
+      if (_history.length > 5) {
+        _history.removeLast();
+      }
+
+      setState(() {
+        _result =
+            'Metode: ${_metodePerhitungan}\n'
+            '━━━━━━━━━━━━━━━━━━━━━━━━━━\n'
+            'Harga Awal: Rp ${_formatRupiah(hargaAwal)}\n'
+            '$keteranganDiskon\n'
+            'Diskon: ${persenDiskon.toStringAsFixed(0)}% (Rp ${_formatRupiah(diskon)})\n'
+            'Harga Akhir: Rp ${_formatRupiah(hargaSetelahDiskon)}\n'
+            'Hemat: Rp ${_formatRupiah(diskon)}';
+      });
+    } else {
+      setState(() {
+        _result = 'Masukkan harga yang valid! (Harga > 0)';
+      });
+    }
+  }
+
+  String _formatRupiah(double value) {
+    return value
+        .toStringAsFixed(0)
+        .replaceAllMapped(
+          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+          (Match m) => '${m[1]}.',
+        );
+  }
+
+  void _clearInput() {
+    _hargaController.clear();
+    setState(() {
+      _result = '';
+    });
+  }
+
+  void _clearHistory() {
+    setState(() {
+      _history.clear();
+    });
+  }
+
+  void _useExample() {
+    setState(() {
+      _hargaController.text = '1250000';
+    });
+  }
+
+  void _toggleMetode() {
+    setState(() {
+      _metodePerhitungan = _metodePerhitungan == 'Nested IF'
+          ? 'Switch Case'
+          : 'Nested IF';
+      _result = '';
+    });
+  }
+
+  @override
+  void dispose() {
+    _hargaController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Kalkulator Diskon"),
+        centerTitle: true,
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Card(
+              elevation: 4,
+              color: Colors.deepPurple.shade50,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.local_offer,
+                      size: 60,
+                      color: Colors.deepPurple,
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      "Kalkulator Diskon",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    const Text(
+                      "Hitung harga setelah diskon",
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            Card(
+              color: Colors.amber.shade50,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Ketentuan Diskon:",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    const Text(
+                      "• > Rp 1.500.000 → Diskon 30%\n"
+                      "• Rp 1.000.000 - 1.500.000 → Diskon 20%\n"
+                      "• Rp 500.000 - 1.000.000 → Diskon 10%\n"
+                      "• < Rp 500.000 → Diskon 0%",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Metode:",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                SegmentedButton<String>(
+                  segments: const [
+                    ButtonSegment(value: 'Nested IF', label: Text('Nested IF')),
+                    ButtonSegment(
+                      value: 'Switch Case',
+                      label: Text('Switch Case'),
+                    ),
+                  ],
+                  selected: {_metodePerhitungan},
+                  onSelectionChanged: (Set<String> newSelection) {
+                    _toggleMetode();
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+
+            const Text(
+              "Jumlah Pembelian:",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _hargaController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                hintText: 'Contoh: 1250000',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.shopping_cart),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _calculateDiskon,
+                    icon: const Icon(Icons.calculate),
+                    label: const Text("Hitung"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _useExample,
+                    icon: const Icon(Icons.format_size),
+                    label: const Text("Contoh"),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.deepPurple,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+
+            OutlinedButton.icon(
+              onPressed: _clearInput,
+              icon: const Icon(Icons.clear),
+              label: const Text("Reset"),
+              style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
+            ),
+            const SizedBox(height: 20),
+
+            if (_result.isNotEmpty) ...[
+              Card(
+                color: Colors.green.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    _result,
+                    style: const TextStyle(fontSize: 14, height: 1.5),
+                  ),
+                ),
+              ),
+            ],
+            const SizedBox(height: 20),
+
+            if (_history.isNotEmpty) ...[
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Riwayat:",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextButton.icon(
+                            onPressed: _clearHistory,
+                            icon: const Icon(Icons.delete, size: 18),
+                            label: const Text("Hapus"),
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Column(
+                        children: _history.map((item) {
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${item['metode']} - ${item['keterangan']}",
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "Rp ${_formatRupiah(item['hargaAwal'])} → Rp ${_formatRupiah(item['hargaSetelahDiskon'])}",
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
