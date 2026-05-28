@@ -134,6 +134,21 @@ class MainMenuPage extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(height: 20),
+              // ==================== MENU BARU: BILANGAN ====================
+              _buildMenuCard(
+                context,
+                title: "Bilangan",
+                subtitle: "20 angka dengan for, while, do-while",
+                icon: Icons.looks_one,
+                color: Colors.indigo,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const BilanganPage()),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -1696,7 +1711,7 @@ class _DiskonPageState extends State<DiskonPage> {
   String _result = '';
   String _metodePerhitungan = 'Nested IF';
 
-  List<Map<String, dynamic>> _history = [];
+  final List<Map<String, dynamic>> _history = [];
 
   // Nested IF
   double _hitungDiskonNestedIF(double hargaAwal) {
@@ -1788,7 +1803,7 @@ class _DiskonPageState extends State<DiskonPage> {
 
       setState(() {
         _result =
-            'Metode: ${_metodePerhitungan}\n'
+            'Metode: $_metodePerhitungan\n'
             '━━━━━━━━━━━━━━━━━━━━━━━━━━\n'
             'Harga Awal: Rp ${_formatRupiah(hargaAwal)}\n'
             '$keteranganDiskon\n'
@@ -2073,6 +2088,223 @@ class _DiskonPageState extends State<DiskonPage> {
                 ),
               ),
             ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ==================== FITUR BILANGAN (FOR, WHILE, DO-WHILE) ====================
+class BilanganPage extends StatelessWidget {
+  const BilanganPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("20 Angka - Perulangan"),
+        centerTitle: true,
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Fitur 1: Bilangan Bulat dengan FOR
+            _buildNumberCard(
+              title: "Bilangan Bulat (1 - 20)",
+              subtitle: "Menggunakan perulangan FOR",
+              icon: Icons.looks_one,
+              color: Colors.blue,
+              numbers: _getBilanganBulatWithFor(),
+            ),
+            const SizedBox(height: 16),
+
+            // Fitur 2: Bilangan Ganjil dengan WHILE
+            _buildNumberCard(
+              title: "Bilangan Ganjil",
+              subtitle: "Menggunakan perulangan WHILE",
+              icon: Icons.looks_two,
+              color: Colors.green,
+              numbers: _getBilanganGanjilWithWhile(),
+            ),
+            const SizedBox(height: 16),
+
+            // Fitur 3: Bilangan Fibonacci dengan DO-WHILE
+            _buildNumberCard(
+              title: "Bilangan Fibonacci",
+              subtitle: "Menggunakan perulangan DO-WHILE",
+              icon: Icons.show_chart,
+              color: Colors.orange,
+              numbers: _getFibonacciWithDoWhile(),
+            ),
+            const SizedBox(height: 16),
+
+            // Fitur 4: Bilangan Ganjil dengan FOR (pilihan bebas)
+            _buildNumberCard(
+              title: "Bilangan Ganjil",
+              subtitle: "Menggunakan perulangan FOR (pilihan bebas)",
+              icon: Icons.looks_3,
+              color: Colors.purple,
+              numbers: _getBilanganGanjilWithFor(),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // === FITUR 1: BILANGAN BULAT dengan FOR ===
+  List<int> _getBilanganBulatWithFor() {
+    List<int> numbers = [];
+    for (int i = 1; i <= 20; i++) {
+      numbers.add(i);
+    }
+    return numbers;
+  }
+
+  // === FITUR 2: BILANGAN GANJIL dengan WHILE ===
+  List<int> _getBilanganGanjilWithWhile() {
+    List<int> numbers = [];
+    int i = 1;
+    while (numbers.length < 20) {
+      numbers.add(i);
+      i += 2;
+    }
+    return numbers;
+  }
+
+  // === FITUR 3: BILANGAN FIBONACCI dengan DO-WHILE ===
+  List<int> _getFibonacciWithDoWhile() {
+    List<int> fibonacci = [];
+    int a = 0;
+    int b = 1;
+
+    do {
+      fibonacci.add(a);
+      int next = a + b;
+      a = b;
+      b = next;
+    } while (fibonacci.length < 20);
+
+    return fibonacci;
+  }
+
+  // === FITUR 4: BILANGAN GANJIL dengan FOR (pilihan bebas) ===
+  List<int> _getBilanganGanjilWithFor() {
+    List<int> numbers = [];
+    for (int i = 1; i <= 39; i += 2) {
+      numbers.add(i);
+    }
+    return numbers;
+  }
+
+  // Widget Card untuk menampilkan deret bilangan
+  Widget _buildNumberCard({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required Color color,
+    required List<int> numbers,
+  }) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(icon, size: 28, color: color),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: color,
+                        ),
+                      ),
+                      Text(
+                        subtitle,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    "${numbers.length} Angka",
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: color,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(height: 20),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade50,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                children: numbers.map((number) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: color.withOpacity(0.3)),
+                    ),
+                    child: Text(
+                      number.toString(),
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: color,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
           ],
         ),
       ),
