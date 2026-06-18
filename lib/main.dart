@@ -51,7 +51,7 @@ class MainMenuPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 20), // Spasi atas tambahan
+                const SizedBox(height: 20),
                 const Icon(
                   Icons.school,
                   size: 80,
@@ -73,7 +73,7 @@ class MainMenuPage extends StatelessWidget {
                     color: Colors.grey,
                   ),
                 ),
-                const SizedBox(height: 30), // Mengurangi sedikit jarak agar lebih rapat
+                const SizedBox(height: 30),
                 _buildMenuCard(
                   context,
                   title: "Profile",
@@ -129,7 +129,22 @@ class MainMenuPage extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 20), // Spasi bawah tambahan
+                const SizedBox(height: 20),
+                // --- MENU BARU: FITUR ZODIAK ---
+                _buildMenuCard(
+                  context,
+                  title: "Fitur Zodiak",
+                  subtitle: "Cek ramalan dan karakteristik zodiakmu",
+                  icon: Icons.auto_awesome,
+                  color: Colors.pink,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ZodiacPage()),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -284,12 +299,9 @@ class ProfileDetailPage extends StatelessWidget {
       appBar: AppBar(title: Text("Profil ${member.name}")),
       body: SingleChildScrollView(
         child: Center(
-          // Ditambahkan agar isi Column bisa benar-benar di tengah
           child: Column(
-            mainAxisAlignment:
-                MainAxisAlignment.center, // Pusatkan secara vertikal
-            crossAxisAlignment:
-                CrossAxisAlignment.center, // Pusatkan secara horizontal
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 30),
               CircleAvatar(
@@ -366,7 +378,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     super.initState();
     _controller = VideoPlayerController.asset(widget.videoPath)
       ..initialize().then((_) {
-        // Memastikan frame pertama muncul
         setState(() {});
       });
   }
@@ -1020,13 +1031,16 @@ class _QuestionerPageState extends State<QuestionerPage> {
                     _buildSingleChoiceOption(3, "JavaScript"),
                     _buildSingleChoiceOption(4, "Kotlin"),
                     const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _selectedSingleAnswer == null ? null : _checkSingleAnswer,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple,
-                        foregroundColor: Colors.white,
+                    ButtonTheme(
+                      alignedDropdown: true,
+                      child: ElevatedButton(
+                        onPressed: _selectedSingleAnswer == null ? null : _checkSingleAnswer,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purple,
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text("Cek Jawaban"),
                       ),
-                      child: const Text("Cek Jawaban"),
                     ),
                     if (_showSingleResult) ...[
                       const SizedBox(height: 15),
@@ -1455,5 +1469,235 @@ class _PollingPageState extends State<PollingPage> {
   }
 }
 
+// ==================== FITUR BARU: ZODIAK ====================
+class ZodiacPage extends StatefulWidget {
+  const ZodiacPage({super.key});
 
+  @override
+  State<ZodiacPage> createState() => _ZodiacPageState();
+}
 
+class _ZodiacPageState extends State<ZodiacPage> {
+  DateTime? _selectedDate;
+  String _zodiacName = '';
+  IconData _zodiacIcon = Icons.auto_awesome; // Menggunakan IconData standar Flutter
+  Color _zodiacColor = Colors.grey;
+  String _zodiacCharacteristics = 'Ketuk tombol di atas untuk memilih tanggal lahirmu. Mari kita lihat kisah dan rahasia yang tersimpan di balik zodiakmu!';
+
+  void _calculateZodiac(DateTime date) {
+    int day = date.day;
+    int month = date.month;
+    String name = '';
+    IconData icon = Icons.auto_awesome;
+    Color color = Colors.green;
+    String info = '';
+
+    if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) {
+      name = 'Aries';
+      icon = Icons.local_fire_department;
+      color = Colors.redAccent;
+      info = 'Sebagai seorang Aries, kamu dilahirkan dengan jiwa pemimpin sejati yang penuh energi. Kamu adalah pribadi yang pemberani, kompetitif, dan selalu bersemangat menghadapi tantangan baru. Kemandirianmu yang kuat membuatmu tidak takut melangkah sendirian demi meraih impian.';
+    } else if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) {
+      name = 'Taurus';
+      icon = Icons.nature_people;
+      color = Colors.teal;
+      info = 'Sebagai seorang Taurus, kamu adalah definisi dari kesetiaan dan stabilitas. Kamu dikenal sebagai pribadi yang bisa diandalkan, sangat sabar, dan memiliki tekad sekuat baja. Meskipun terkadang dinilai keras kepala, itu sebenarnya adalah wujud dari konsistensimu dalam mempertahankan prinsip hidup.';
+    } else if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) {
+      name = 'Gemini';
+      icon = Icons.sms;
+      color = Colors.cyan;
+      info = 'Sebagai seorang Gemini, kamu memiliki kecerdasan sosial yang luar biasa dan pemikiran yang sangat dinamis. Kamu adalah pribadi yang komunikatif, ekspresif, dan sangat mudah beradaptasi dengan lingkungan baru. Rasa ingin tahumu yang tinggi membuatmu selalu menyenangkan untuk diajak bertukar cerita.';
+    } else if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) {
+      name = 'Cancer';
+      icon = Icons.favorite;
+      color = Colors.pinkAccent;
+      info = 'Sebagai seorang Cancer, kamu dianugerahi hati yang sangat lembut dan intuisi yang mendalam. Kamu adalah pribadi yang penyayang, penuh empati, dan protektif terhadap orang-orang terdekatmu. Bagimu, kenyamanan keluarga dan sahabat adalah segalanya dalam hidup.';
+    } else if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) {
+      name = 'Leo';
+      icon = Icons.wb_sunny;
+      color = Colors.orangeAccent;
+      info = 'Sebagai seorang Leo, kamu memancarkan aura kepercayaan diri dan kehangatan yang memikat. Kamu terlahir sebagai sosok yang murah hati, setia kawan, dan berjiwa pemimpin tinggi. Kehadiranmu sering kali menjadi pusat perhatian karena sifatmu yang ceria dan penuh karisma.';
+    } else if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) {
+      name = 'Virgo';
+      icon = Icons.assignment_turned_in;
+      color = Colors.teal;
+      info = 'Sebagai seorang Virgo, kamu adalah pribadi yang sangat detail-oriented, analitis, dan terstruktur. Kamu dikenal sebagai pekerja keras yang praktis dan selalu mengutamakan kesempurnaan dalam setiap hal yang kamu lakukan. Ketulusanmu menolong sesama membuatmu menjadi sahabat yang sangat berharga.';
+    } else if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) {
+      name = 'Libra';
+      icon = Icons.balance;
+      color = Colors.indigoAccent;
+      info = 'Sebagai seorang Libra, hidupmu berpusat pada harmoni, kedamaian, dan keadilan. Kamu adalah sosok yang diplomatis, artistik, dan selalu berusaha melihat segala sesuatu dari sudut pandang yang objektif. Pesona alamimu membuat orang lain merasa nyaman berada di dekatmu.';
+    } else if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) {
+      name = 'Scorpio';
+      icon = Icons.psychology;
+      color = Colors.purpleAccent;
+      info = 'Sebagai seorang Scorpio, kamu menyimpan kekuatan emosional dan daya tarik yang sangat misterius. Kamu adalah pribadi yang penuh fokus, bertekad kuat, dan memiliki intuisi yang tajam. Di balik pembawaanmu yang tenang dan penuh rahasia, kamu adalah tipe pejuang yang enggan menyerah.';
+    } else if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) {
+      name = 'Sagittarius';
+      icon = Icons.explore;
+      color = Colors.amber;
+      info = 'Sebagai seorang Sagittarius, kamu adalah sang petualang sejati yang mencintai kebebasan. Jiwamu penuh dengan optimisme, humor yang menghibur, dan pandangan hidup yang filosofis. Kamu selalu haus akan pengetahuan baru dan sangat menikmati setiap perjalanan hidup.';
+    } else if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) {
+      name = 'Capricorn';
+      icon = Icons.trending_up;
+      color = Colors.blueGrey;
+      info = 'Sebagai seorang Capricorn, kamu adalah fondasi ketangguhan yang luar biasa. Kamu dikenal sangat disiplin, bertanggung jawab, bijaksana, dan penuh ambisi. Bagimu, kesuksesan diraih lewat kerja keras yang konsisten dan perencanaan masa depan yang matang.';
+    } else if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) {
+      name = 'Aquarius';
+      icon = Icons.lightbulb;
+      color = Colors.blueAccent;
+      info = 'Sebagai seorang Aquarius, kamu adalah pemikir bebas yang visioner dan penuh inovasi. Kamu berjiwa humanis, mandiri, dan sering kali memiliki sudut pandang yang unik serta out-of-the-box. Kamu sangat peduli pada perubahan sosial dan kemajuan masa depan.';
+    } else if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) {
+      name = 'Pisces';
+      icon = Icons.water;
+      color = Colors.lightBlueAccent;
+      info = 'Sebagai seorang Pisces, jiwamu dipenuhi oleh imajinasi kreatif dan kepekaan seni yang tinggi. Kamu adalah pribadi yang sangat tulus, penuh empati, dan penyayang. Kedalaman perasaanmu membuatmu mampu memahami dan terhubung dengan hati orang lain secara mendalam.';
+    }
+
+    setState(() {
+      _selectedDate = date;
+      _zodiacName = name;
+      _zodiacIcon = icon;
+      _zodiacColor = color;
+      _zodiacCharacteristics = info;
+    });
+  }
+
+  Future<void> _pickDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.green, // Menyelaraskan dengan tema utama aplikasi kelompok
+              onPrimary: Colors.white,
+              onSurface: Colors.black87,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      _calculateZodiac(picked);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Fitur Zodiak'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 10),
+              // Tombol Pemilih Tanggal yang Dipercantik
+              ElevatedButton.icon(
+                onPressed: () => _pickDate(context),
+                icon: const Icon(Icons.calendar_month, color: Colors.green),
+                label: Text(
+                  _selectedDate == null
+                      ? 'Pilih Tanggal Lahir Kamu'
+                      : 'Tanggal Lahir: ${_selectedDate!.day}-${_selectedDate!.month}-${_selectedDate!.year}',
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black87),
+                ),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  backgroundColor: Colors.white,
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    side: BorderSide(color: Colors.green.withOpacity(0.3), width: 1.5),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 35),
+              
+              // Card Hasil Karakteristik dengan Tampilan Elegan
+              Card(
+                elevation: 6,
+                shadowColor: _zodiacColor.withOpacity(0.2),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.white,
+                        _zodiacColor.withOpacity(0.05),
+                      ],
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(28.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Lingkaran Ikon Zodiak Modern
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: _zodiacColor.withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          _zodiacIcon,
+                          size: 65,
+                          color: _zodiacColor,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Nama Zodiak
+                      Text(
+                        _zodiacName.isEmpty ? 'Kisah Zodiakmu' : _zodiacName,
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: _zodiacName.isEmpty ? Colors.grey : _zodiacColor,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      if (_zodiacName.isNotEmpty)
+                        Container(
+                          width: 60,
+                          height: 3,
+                          decoration: BoxDecoration(
+                            color: _zodiacColor,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
+                      const SizedBox(height: 20),
+                      // Deskripsi Bergaya Cerita/Narasi
+                      Text(
+                        _zodiacCharacteristics,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15.5,
+                          color: Colors.black87,
+                          height: 1.6, // Mengatur line spacing agar nyaman dibaca seperti cerita
+                          fontStyle: _zodiacName.isEmpty ? FontStyle.italic : FontStyle.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
