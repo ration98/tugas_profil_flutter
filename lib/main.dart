@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'sorting_page.dart';
 
 void main() => runApp(const GroupProfileApp());
 
@@ -43,76 +44,94 @@ class MainMenuPage extends StatelessWidget {
         title: const Text("Kelompok 8 - Mobile Programming"),
         centerTitle: true,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.school,
-                size: 80,
-                color: Colors.green,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "Selamat Datang",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20), // Spasi atas tambahan
+                const Icon(
+                  Icons.school,
+                  size: 80,
+                  color: Colors.green,
                 ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                "Pilih Menu",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
+                const SizedBox(height: 20),
+                const Text(
+                  "Selamat Datang",
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 50),
-              _buildMenuCard(
-                context,
-                title: "Profile",
-                subtitle: "Lihat profil anggota kelompok",
-                icon: Icons.people,
-                color: Colors.blue,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              _buildMenuCard(
-                context,
-                title: "Kalkulator",
-                subtitle: "Hitung rumus matematika",
-                icon: Icons.calculate,
-                color: Colors.green,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const TugasRumusPage()),
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              _buildMenuCard(
-                context,
-                title: "Polling",
-                subtitle: "Quesioner dan polling hobi olahraga",
-                icon: Icons.poll,
-                color: Colors.orange,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PollingMenuPage()),
-                  );
-                },
-              ),
-            ],
+                const SizedBox(height: 10),
+                const Text(
+                  "Pilih Menu",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 30), // Mengurangi sedikit jarak agar lebih rapat
+                _buildMenuCard(
+                  context,
+                  title: "Profile",
+                  subtitle: "Lihat profil anggota kelompok",
+                  icon: Icons.people,
+                  color: Colors.blue,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomePage()),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                _buildMenuCard(
+                  context,
+                  title: "Kalkulator",
+                  subtitle: "Hitung rumus matematika",
+                  icon: Icons.calculate,
+                  color: Colors.green,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const TugasRumusPage()),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                _buildMenuCard(
+                  context,
+                  title: "Polling",
+                  subtitle: "Quesioner dan polling hobi olahraga",
+                  icon: Icons.poll,
+                  color: Colors.orange,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PollingMenuPage()),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                _buildMenuCard(
+                  context,
+                  title: "Sorting Algoritma",
+                  subtitle: "Urutkan angka dan huruf (Max 10)",
+                  icon: Icons.sort,
+                  color: Colors.deepPurple,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SortingPage()),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20), // Spasi bawah tambahan
+              ],
+            ),
           ),
         ),
       ),
