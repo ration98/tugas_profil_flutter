@@ -79,12 +79,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: Colors.green.shade300,
+                        color: const Color(0xFF80E5FF),
                         width: 3,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.green.withValues(alpha: 0.2),
+                          color: const Color(0xFF00BFFF).withValues(alpha: 0.2),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         ),
@@ -96,11 +96,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            color: Colors.green.shade100,
+                            color: const Color(0xFFB3F0FF),
                             child: Icon(
                               Icons.person,
                               size: 60,
-                              color: Colors.green.shade700,
+                              color: const Color(0xFF0099CC),
                             ),
                           );
                         },
@@ -127,13 +127,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.green.shade100,
+                      color: const Color(0xFFB3F0FF),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       widget.user.namaLevelUser,
-                      style: TextStyle(
-                        color: Colors.green.shade700,
+                      style: const TextStyle(
+                        color: Color(0xFF0099CC),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -157,9 +157,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.video_library,
-                        color: Colors.green.shade700,
+                        color: Color(0xFF0099CC),
                       ),
                       const SizedBox(width: 8),
                       Text(
@@ -167,7 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.green.shade700,
+                          color: const Color(0xFF0099CC),
                         ),
                       ),
                     ],
@@ -201,7 +201,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 _videoController!.value.isPlaying
                                     ? Icons.pause
                                     : Icons.play_arrow,
-                                color: Colors.green.shade700,
+                                color: const Color(0xFF0099CC),
                                 size: 30,
                               ),
                             ),
@@ -219,7 +219,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         Duration(seconds: value.toInt()),
                                       );
                                     },
-                                    activeColor: Colors.green.shade700,
+                                    activeColor: const Color(0xFF0099CC),
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

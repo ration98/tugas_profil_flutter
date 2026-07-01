@@ -41,9 +41,9 @@ class GroupProfileApp extends StatelessWidget {
       title: 'Kelompok 8 - Mobile Programming',
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Colors.green,
+        colorSchemeSeed: const Color(0xFF00BFFF),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.green,
+          backgroundColor: Color(0xFF00BFFF),
           foregroundColor: Colors.white,
           elevation: 4,
         ),

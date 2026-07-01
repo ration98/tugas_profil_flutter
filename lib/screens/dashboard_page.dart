@@ -5,7 +5,8 @@ import '../database/database_helper.dart';
 import '../sorting_page.dart';
 import '../main.dart';
 import '../features/percabangan_page.dart';
-import '../features/perulangan_page.dart'; // TAMBAHKAN IMPORT INI
+import '../features/perulangan_page.dart';
+import 'widgets/custom_charts.dart'; // Import Custom Charts
 
 class DashboardPage extends StatelessWidget {
   final User user;
@@ -34,8 +35,8 @@ class DashboardPage extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Colors.green.shade700,
-                    Colors.green.shade500,
+                    const Color(0xFF0099CC),
+                    const Color(0xFF00BFFF),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(16),
@@ -98,7 +99,7 @@ class DashboardPage extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.admin_panel_settings,
                                 size: 16,
                                 color: Colors.white,
@@ -122,6 +123,11 @@ class DashboardPage extends StatelessWidget {
             ),
           ),
           
+          const SizedBox(height: 20),
+
+          // ============ GRAPH SLIDESHOW ============
+          GraphSlideshow(user: user),
+
           const SizedBox(height: 24),
 
           // ============ MENU FITUR ============
@@ -147,7 +153,7 @@ class DashboardPage extends StatelessWidget {
                 title: "Kalkulator",
                 subtitle: "Hitung rumus",
                 icon: Icons.calculate,
-                color: Colors.green,
+                color: const Color(0xFF00BFFF),
                 onTap: () {
                   Navigator.push(
                     context,
