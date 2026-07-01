@@ -1,10 +1,19 @@
+// main.dart - FULL VERSION WITH LOGIN SSO
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'sorting_page.dart';
+
+// ===== IMPORT SCREENS =====
+import 'screens/login_page.dart';
+import 'screens/main_menu_page.dart';
+
+// ===== IMPORT MODELS =====
+import 'models/user_model.dart';
+
 
 void main() => runApp(const GroupProfileApp());
 
+// ============ MODEL MEMBER ============
 class Member {
   final String name;
   final String nim;
@@ -21,6 +30,7 @@ class Member {
   });
 }
 
+// ============ MAIN APP ============
 class GroupProfileApp extends StatelessWidget {
   const GroupProfileApp({super.key});
 
@@ -28,178 +38,37 @@ class GroupProfileApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.green),
-      home: const MainMenuPage(),
-    );
-  }
-}
-
-class MainMenuPage extends StatelessWidget {
-  const MainMenuPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Kelompok 8 - Mobile Programming"),
-        centerTitle: true,
+      title: 'Kelompok 8 - Mobile Programming',
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.green,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+          elevation: 4,
+        ),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20), // Spasi atas tambahan
-                const Icon(
-                  Icons.school,
-                  size: 80,
-                  color: Colors.green,
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Selamat Datang",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Pilih Menu",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
-                ),
-                const SizedBox(height: 30), // Mengurangi sedikit jarak agar lebih rapat
-                _buildMenuCard(
-                  context,
-                  title: "Profile",
-                  subtitle: "Lihat profil anggota kelompok",
-                  icon: Icons.people,
-                  color: Colors.blue,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20),
-                _buildMenuCard(
-                  context,
-                  title: "Kalkulator",
-                  subtitle: "Hitung rumus matematika",
-                  icon: Icons.calculate,
-                  color: Colors.green,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const TugasRumusPage()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20),
-                _buildMenuCard(
-                  context,
-                  title: "Polling",
-                  subtitle: "Quesioner dan polling hobi olahraga",
-                  icon: Icons.poll,
-                  color: Colors.orange,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const PollingMenuPage()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20),
-                _buildMenuCard(
-                  context,
-                  title: "Sorting Algoritma",
-                  subtitle: "Urutkan angka dan huruf (Max 10)",
-                  icon: Icons.sort,
-                  color: Colors.deepPurple,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SortingPage()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20), // Spasi bawah tambahan
-              ],
+      // ✅ INI YANG DIUBAH: Login sebagai halaman awal
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => const LoginPage(),
+      },
+      onGenerateRoute: (settings) {
+        // Handle passing user data ke MainMenuPage
+        if (settings.name == '/main' && settings.arguments != null) {
+          return MaterialPageRoute(
+            builder: (context) => MainMenuPage(
+              user: settings.arguments as User,
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMenuCard(
-    BuildContext context, {
-    required String title,
-    required String subtitle,
-    required IconData icon,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return Card(
-      elevation: 4,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(24),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  icon,
-                  size: 40,
-                  color: color,
-                ),
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      subtitle,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.arrow_forward_ios, size: 20),
-            ],
-          ),
-        ),
-      ),
+          );
+        }
+        return null;
+      },
     );
   }
 }
 
+// ============ HOMEPAGE (Profile Anggota) ============
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -214,7 +83,7 @@ class HomePage extends StatelessWidget {
         videoPath: "assets/videos/vid_perkenalan.mp4",
       ),
       Member(
-        name: "Mirfa Nanda  Syahiratia",
+        name: "Mirfa Nanda Syahiratia",
         nim: "0112524018",
         bio: "Hobi bermain musik dan belajar pemrograman mobile.",
         imagePath: "assets/images/mirfa.jpeg",
@@ -240,22 +109,34 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Profil Anggota Kelompok"),
         centerTitle: true,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
       ),
       body: ListView.builder(
         itemCount: members.length,
-        itemExtent: 100,
         itemBuilder: (context, index) {
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: ListTile(
               leading: CircleAvatar(
+                radius: 28,
                 backgroundImage: AssetImage(members[index].imagePath),
               ),
               title: Text(
                 members[index].name,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
-              subtitle: Text("NIM: ${members[index].nim}"),
+              subtitle: Text(
+                "NIM: ${members[index].nim}",
+                style: const TextStyle(fontSize: 14),
+              ),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 Navigator.push(
@@ -274,6 +155,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
+// ============ PROFILE DETAIL PAGE ============
 class ProfileDetailPage extends StatelessWidget {
   final Member member;
   const ProfileDetailPage({super.key, required this.member});
@@ -281,15 +163,17 @@ class ProfileDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Profil ${member.name}")),
+      appBar: AppBar(
+        title: Text("Profil ${member.name}"),
+        centerTitle: true,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
         child: Center(
-          // Ditambahkan agar isi Column bisa benar-benar di tengah
           child: Column(
-            mainAxisAlignment:
-                MainAxisAlignment.center, // Pusatkan secara vertikal
-            crossAxisAlignment:
-                CrossAxisAlignment.center, // Pusatkan secara horizontal
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 30),
               CircleAvatar(
@@ -308,7 +192,10 @@ class ProfileDetailPage extends StatelessWidget {
               Text(
                 "NIM: ${member.nim}",
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -318,7 +205,10 @@ class ProfileDetailPage extends StatelessWidget {
                 child: Text(
                   member.bio,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    height: 1.5,
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -335,9 +225,14 @@ class ProfileDetailPage extends StatelessWidget {
                 icon: const Icon(Icons.play_circle_fill),
                 label: const Text("Tonton Video Perkenalan"),
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
               ),
@@ -350,6 +245,7 @@ class ProfileDetailPage extends StatelessWidget {
   }
 }
 
+// ============ VIDEO PLAYER PAGE ============
 class VideoPlayerPage extends StatefulWidget {
   final String videoPath;
   const VideoPlayerPage({super.key, required this.videoPath});
@@ -360,14 +256,21 @@ class VideoPlayerPage extends StatefulWidget {
 
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
   late VideoPlayerController _controller;
+  bool _isInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _controller = VideoPlayerController.asset(widget.videoPath)
       ..initialize().then((_) {
-        // Memastikan frame pertama muncul
-        setState(() {});
+        setState(() {
+          _isInitialized = true;
+        });
+      }).catchError((error) {
+        debugPrint('Error loading video: $error');
+        setState(() {
+          _isInitialized = false;
+        });
       });
   }
 
@@ -385,31 +288,47 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         title: const Text("Preview Video"),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: Center(
-        child: _controller.value.isInitialized
+        child: _isInitialized
             ? AspectRatio(
                 aspectRatio: _controller.value.aspectRatio,
                 child: VideoPlayer(_controller),
               )
-            : const CircularProgressIndicator(),
+            : const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 20),
+                  Text(
+                    "Memuat video...",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _controller.value.isPlaying
-                ? _controller.pause()
-                : _controller.play();
-          });
-        },
+        onPressed: _isInitialized
+            ? () {
+                setState(() {
+                  _controller.value.isPlaying
+                      ? _controller.pause()
+                      : _controller.play();
+                });
+              }
+            : null,
+        backgroundColor: Colors.green,
         child: Icon(
           _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+          color: Colors.white,
         ),
       ),
     );
   }
 }
 
+// ============ TUGAS RUMUS PAGE ============
 class TugasRumusPage extends StatelessWidget {
   const TugasRumusPage({super.key});
 
@@ -419,6 +338,8 @@ class TugasRumusPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Tugas Rumus"),
         centerTitle: true,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
       ),
       body: GridView.count(
         crossAxisCount: 2,
@@ -480,8 +401,12 @@ class TugasRumusPage extends StatelessWidget {
   ) {
     return Card(
       elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: InkWell(
         onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -502,6 +427,7 @@ class TugasRumusPage extends StatelessWidget {
   }
 }
 
+// ============ LUAS SEGITIGA PAGE ============
 class LuasSegitigaPage extends StatefulWidget {
   const LuasSegitigaPage({super.key});
 
@@ -540,7 +466,11 @@ class _LuasSegitigaPageState extends State<LuasSegitigaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Hitung Luas Segitiga")),
+      appBar: AppBar(
+        title: const Text("Hitung Luas Segitiga"),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -572,6 +502,10 @@ class _LuasSegitigaPageState extends State<LuasSegitigaPage> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: _calculate,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+              ),
               child: const Text('Hitung'),
             ),
             const SizedBox(height: 24),
@@ -587,6 +521,7 @@ class _LuasSegitigaPageState extends State<LuasSegitigaPage> {
   }
 }
 
+// ============ ISI TABUNG PAGE ============
 class IsiTabungPage extends StatefulWidget {
   const IsiTabungPage({super.key});
 
@@ -625,7 +560,11 @@ class _IsiTabungPageState extends State<IsiTabungPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Hitung Isi Tabung")),
+      appBar: AppBar(
+        title: const Text("Hitung Isi Tabung"),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -657,6 +596,10 @@ class _IsiTabungPageState extends State<IsiTabungPage> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: _calculate,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+              ),
               child: const Text('Hitung'),
             ),
             const SizedBox(height: 24),
@@ -672,6 +615,7 @@ class _IsiTabungPageState extends State<IsiTabungPage> {
   }
 }
 
+// ============ LUAS KOTAK PAGE ============
 class LuasKotakPage extends StatefulWidget {
   const LuasKotakPage({super.key});
 
@@ -707,7 +651,11 @@ class _LuasKotakPageState extends State<LuasKotakPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Hitung Luas Kotak")),
+      appBar: AppBar(
+        title: const Text("Hitung Luas Kotak"),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -730,6 +678,10 @@ class _LuasKotakPageState extends State<LuasKotakPage> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: _calculate,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+              ),
               child: const Text('Hitung'),
             ),
             const SizedBox(height: 24),
@@ -745,6 +697,7 @@ class _LuasKotakPageState extends State<LuasKotakPage> {
   }
 }
 
+// ============ LUAS LINGKARAN PAGE ============
 class LuasLingkaranPage extends StatefulWidget {
   const LuasLingkaranPage({super.key});
 
@@ -780,7 +733,11 @@ class _LuasLingkaranPageState extends State<LuasLingkaranPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Hitung Luas Lingkaran")),
+      appBar: AppBar(
+        title: const Text("Hitung Luas Lingkaran"),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -803,6 +760,10 @@ class _LuasLingkaranPageState extends State<LuasLingkaranPage> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: _calculate,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+              ),
               child: const Text('Hitung'),
             ),
             const SizedBox(height: 24),
@@ -818,6 +779,7 @@ class _LuasLingkaranPageState extends State<LuasLingkaranPage> {
   }
 }
 
+// ============ POLLING MENU PAGE ============
 class PollingMenuPage extends StatelessWidget {
   const PollingMenuPage({super.key});
 
@@ -827,6 +789,8 @@ class PollingMenuPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Polling Menu"),
         centerTitle: true,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -882,6 +846,9 @@ class PollingMenuPage extends StatelessWidget {
   }) {
     return Card(
       elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -893,7 +860,7 @@ class PollingMenuPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha:0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -934,6 +901,7 @@ class PollingMenuPage extends StatelessWidget {
   }
 }
 
+// ============ QUESTIONER PAGE ============
 class QuestionerPage extends StatefulWidget {
   const QuestionerPage({super.key});
 
@@ -981,6 +949,8 @@ class _QuestionerPageState extends State<QuestionerPage> {
       appBar: AppBar(
         title: const Text("Quesioner"),
         centerTitle: true,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -995,6 +965,9 @@ class _QuestionerPageState extends State<QuestionerPage> {
           children: [
             Card(
               elevation: 3,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -1073,6 +1046,9 @@ class _QuestionerPageState extends State<QuestionerPage> {
             const SizedBox(height: 30),
             Card(
               elevation: 3,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -1194,6 +1170,7 @@ class _QuestionerPageState extends State<QuestionerPage> {
   }
 }
 
+// ============ POLLING PAGE ============
 class PollingPage extends StatefulWidget {
   const PollingPage({super.key});
 
@@ -1275,6 +1252,8 @@ class _PollingPageState extends State<PollingPage> {
       appBar: AppBar(
         title: const Text("Polling Hobi Olahraga"),
         centerTitle: true,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -1292,6 +1271,9 @@ class _PollingPageState extends State<PollingPage> {
                   Card(
                     elevation: 3,
                     color: Colors.teal.shade50,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
@@ -1339,6 +1321,9 @@ class _PollingPageState extends State<PollingPage> {
                         backgroundColor: Colors.teal,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                   ] else ...[
@@ -1381,6 +1366,9 @@ class _PollingPageState extends State<PollingPage> {
   Widget _buildSportOption(String sport) {
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: RadioListTile<String>(
         title: Text(
           sport,
@@ -1404,6 +1392,9 @@ class _PollingPageState extends State<PollingPage> {
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -1455,5 +1446,1107 @@ class _PollingPageState extends State<PollingPage> {
   }
 }
 
+// ============ ZODIAC PAGE ============
+class ZodiacPage extends StatefulWidget {
+  const ZodiacPage({super.key});
 
+  @override
+  State<ZodiacPage> createState() => _ZodiacPageState();
+}
 
+class _ZodiacPageState extends State<ZodiacPage> {
+  DateTime? _selectedDate;
+  String _zodiacName = '';
+  IconData _zodiacIcon = Icons.auto_awesome;
+  Color _zodiacColor = Colors.grey;
+  String _zodiacCharacteristics = 'Ketuk tombol di atas untuk memilih tanggal lahirmu. Mari kita lihat kisah dan rahasia yang tersimpan di balik zodiakmu!';
+
+  void _calculateZodiac(DateTime date) {
+    int day = date.day;
+    int month = date.month;
+    String name = '';
+    IconData icon = Icons.auto_awesome;
+    Color color = Colors.green;
+    String info = '';
+
+    if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) {
+      name = 'Aries';
+      icon = Icons.local_fire_department;
+      color = Colors.redAccent;
+      info = 'Sebagai seorang Aries, kamu dilahirkan dengan jiwa pemimpin sejati yang penuh energi. Kamu adalah pribadi yang pemberani, kompetitif, dan selalu bersemangat menghadapi tantangan baru.';
+    } else if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) {
+      name = 'Taurus';
+      icon = Icons.nature_people;
+      color = Colors.teal;
+      info = 'Sebagai seorang Taurus, kamu adalah definisi dari kesetiaan dan stabilitas. Kamu dikenal sebagai pribadi yang bisa diandalkan, sangat sabar, dan memiliki tekad sekuat baja.';
+    } else if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) {
+      name = 'Gemini';
+      icon = Icons.sms;
+      color = Colors.cyan;
+      info = 'Sebagai seorang Gemini, kamu memiliki kecerdasan sosial yang luar biasa dan pemikiran yang sangat dinamis. Kamu adalah pribadi yang komunikatif dan mudah beradaptasi.';
+    } else if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) {
+      name = 'Cancer';
+      icon = Icons.favorite;
+      color = Colors.pinkAccent;
+      info = 'Sebagai seorang Cancer, kamu dianugerahi hati yang sangat lembut dan intuisi yang mendalam. Kamu adalah pribadi yang penyayang, penuh empati, dan protektif.';
+    } else if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) {
+      name = 'Leo';
+      icon = Icons.wb_sunny;
+      color = Colors.orangeAccent;
+      info = 'Sebagai seorang Leo, kamu memancarkan aura kepercayaan diri dan kehangatan yang memikat. Kamu terlahir sebagai sosok yang murah hati, setia kawan, dan berjiwa pemimpin.';
+    } else if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) {
+      name = 'Virgo';
+      icon = Icons.assignment_turned_in;
+      color = Colors.teal;
+      info = 'Sebagai seorang Virgo, kamu adalah pribadi yang detail-oriented, analitis, dan terstruktur. Kamu dikenal sebagai pekerja keras yang praktis dan selalu mengutamakan kesempurnaan.';
+    } else if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) {
+      name = 'Libra';
+      icon = Icons.balance;
+      color = Colors.indigoAccent;
+      info = 'Sebagai seorang Libra, hidupmu berpusat pada harmoni, kedamaian, dan keadilan. Kamu adalah sosok yang diplomatis, artistik, dan selalu berusaha melihat segala sesuatu secara objektif.';
+    } else if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) {
+      name = 'Scorpio';
+      icon = Icons.psychology;
+      color = Colors.purpleAccent;
+      info = 'Sebagai seorang Scorpio, kamu menyimpan kekuatan emosional dan daya tarik yang misterius. Kamu adalah pribadi yang fokus, bertekad kuat, dan memiliki intuisi tajam.';
+    } else if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) {
+      name = 'Sagittarius';
+      icon = Icons.explore;
+      color = Colors.amber;
+      info = 'Sebagai seorang Sagittarius, kamu adalah sang petualang sejati yang mencintai kebebasan. Jiwamu penuh optimisme, humor, dan pandangan hidup yang filosofis.';
+    } else if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) {
+      name = 'Capricorn';
+      icon = Icons.trending_up;
+      color = Colors.blueGrey;
+      info = 'Sebagai seorang Capricorn, kamu adalah fondasi ketangguhan yang luar biasa. Kamu dikenal sangat disiplin, bertanggung jawab, bijaksana, dan penuh ambisi.';
+    } else if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) {
+      name = 'Aquarius';
+      icon = Icons.lightbulb;
+      color = Colors.blueAccent;
+      info = 'Sebagai seorang Aquarius, kamu adalah pemikir bebas yang visioner dan penuh inovasi. Kamu berjiwa humanis, mandiri, dan memiliki sudut pandang yang unik.';
+    } else if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) {
+      name = 'Pisces';
+      icon = Icons.water;
+      color = Colors.lightBlueAccent;
+      info = 'Sebagai seorang Pisces, jiwamu dipenuhi oleh imajinasi kreatif dan kepekaan seni yang tinggi. Kamu adalah pribadi yang tulus, penuh empati, dan penyayang.';
+    }
+
+    setState(() {
+      _selectedDate = date;
+      _zodiacName = name;
+      _zodiacIcon = icon;
+      _zodiacColor = color;
+      _zodiacCharacteristics = info;
+    });
+  }
+
+  Future<void> _pickDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.green,
+              onPrimary: Colors.white,
+              onSurface: Colors.black87,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      _calculateZodiac(picked);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Fitur Zodiak'),
+        centerTitle: true,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 10),
+              ElevatedButton.icon(
+                onPressed: () => _pickDate(context),
+                icon: const Icon(Icons.calendar_month, color: Colors.green),
+                label: Text(
+                  _selectedDate == null
+                      ? 'Pilih Tanggal Lahir Kamu'
+                      : 'Tanggal Lahir: ${_selectedDate!.day}-${_selectedDate!.month}-${_selectedDate!.year}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: Colors.black87,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  backgroundColor: Colors.white,
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    side: BorderSide(color: Colors.green.withValues(alpha:0.1), width: 1.5),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 35),
+              Card(
+                elevation: 6,
+                shadowColor: _zodiacColor.withValues(alpha:0.1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.white,
+                        _zodiacColor.withValues(alpha:0.1),
+                      ],
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(28.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: _zodiacColor.withValues(alpha:0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          _zodiacIcon,
+                          size: 65,
+                          color: _zodiacColor,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        _zodiacName.isEmpty ? 'Kisah Zodiakmu' : _zodiacName,
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: _zodiacName.isEmpty ? Colors.grey : _zodiacColor,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      if (_zodiacName.isNotEmpty)
+                        Container(
+                          width: 60,
+                          height: 3,
+                          decoration: BoxDecoration(
+                            color: _zodiacColor,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
+                      const SizedBox(height: 20),
+                      Text(
+                        _zodiacCharacteristics,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15.5,
+                          color: Colors.black87,
+                          height: 1.6,
+                          fontStyle: _zodiacName.isEmpty ? FontStyle.italic : FontStyle.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ============ FITUR PENCABANGAN PAGE ============
+class FiturPencabanganPage extends StatelessWidget {
+  const FiturPencabanganPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Fitur Pencabangan"),
+        centerTitle: true,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _buildMenuCard(
+              context,
+              title: "Nilai Maksimal & Minimal",
+              subtitle: "Temukan nilai terbesar dan terkecil dari 2 angka",
+              icon: Icons.compare_arrows,
+              color: Colors.blue,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const NilaiMaxMinPage()),
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            _buildMenuCard(
+              context,
+              title: "Diskon Bertingkat",
+              subtitle: "Hitung diskon berdasarkan jumlah pembelian (Nested IF)",
+              icon: Icons.discount,
+              color: Colors.orange,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const DiskonNestedIfPage()),
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            _buildMenuCard(
+              context,
+              title: "Diskon Switch-Case",
+              subtitle: "Hitung diskon menggunakan Switch-Case",
+              icon: Icons.switch_account,
+              color: Colors.purple,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const DiskonSwitchCasePage()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuCard(
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha:0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  icon,
+                  size: 32,
+                  color: color,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.arrow_forward_ios, size: 18, color: Colors.grey),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ============ NILAI MAKSIMAL & MINIMAL PAGE (IF) ============
+class NilaiMaxMinPage extends StatefulWidget {
+  const NilaiMaxMinPage({super.key});
+
+  @override
+  State<NilaiMaxMinPage> createState() => _NilaiMaxMinPageState();
+}
+
+class _NilaiMaxMinPageState extends State<NilaiMaxMinPage> {
+  final _bilangan1Controller = TextEditingController();
+  final _bilangan2Controller = TextEditingController();
+  String _result = '';
+
+  void _calculate() {
+    final bil1 = double.tryParse(_bilangan1Controller.text);
+    final bil2 = double.tryParse(_bilangan2Controller.text);
+
+    if (bil1 != null && bil2 != null) {
+      setState(() {
+        // Menggunakan IF untuk menentukan maksimal dan minimal
+        if (bil1 > bil2) {
+          _result = '''
+═══════════════════════════════
+📊 HASIL PERBANDINGAN
+═══════════════════════════════
+Bilangan 1: ${bil1.toStringAsFixed(2)}
+Bilangan 2: ${bil2.toStringAsFixed(2)}
+───────────────────────────────
+✅ NILAI MAKSIMAL: ${bil1.toStringAsFixed(2)}
+📉 NILAI MINIMAL : ${bil2.toStringAsFixed(2)}
+═══════════════════════════════
+Bilangan 1 LEBIH BESAR dari Bilangan 2
+''';
+        } else if (bil2 > bil1) {
+          _result = '''
+═══════════════════════════════
+📊 HASIL PERBANDINGAN
+═══════════════════════════════
+Bilangan 1: ${bil1.toStringAsFixed(2)}
+Bilangan 2: ${bil2.toStringAsFixed(2)}
+───────────────────────────────
+✅ NILAI MAKSIMAL: ${bil2.toStringAsFixed(2)}
+📉 NILAI MINIMAL : ${bil1.toStringAsFixed(2)}
+═══════════════════════════════
+Bilangan 2 LEBIH BESAR dari Bilangan 1
+''';
+        } else {
+          _result = '''
+═══════════════════════════════
+📊 HASIL PERBANDINGAN
+═══════════════════════════════
+Bilangan 1: ${bil1.toStringAsFixed(2)}
+Bilangan 2: ${bil2.toStringAsFixed(2)}
+───────────────────────────────
+⚠️ KEDUA BILANGAN SAMA BESAR!
+Nilai: ${bil1.toStringAsFixed(2)}
+═══════════════════════════════
+''';
+        }
+      });
+    } else {
+      setState(() {
+        _result = '⚠️ Masukkan angka yang valid!';
+      });
+    }
+  }
+
+  void _reset() {
+    _bilangan1Controller.clear();
+    _bilangan2Controller.clear();
+    setState(() {
+      _result = '';
+    });
+  }
+
+  @override
+  void dispose() {
+    _bilangan1Controller.dispose();
+    _bilangan2Controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Nilai Maksimal & Minimal"),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _reset,
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.blue.shade200),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline, color: Colors.blue.shade700),
+                  const SizedBox(width: 10),
+                  const Expanded(
+                    child: Text(
+                      'Masukkan 2 bilangan untuk mengetahui mana yang terbesar dan terkecil',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            TextField(
+              controller: _bilangan1Controller,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Bilangan 1',
+                hintText: 'Contoh: 25',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.looks_one),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _bilangan2Controller,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Bilangan 2',
+                hintText: 'Contoh: 10',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.looks_two),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _calculate,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Hitung', style: TextStyle(fontSize: 16)),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: _reset,
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Reset', style: TextStyle(fontSize: 16)),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            if (_result.isNotEmpty)
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: _result.contains('⚠️') 
+                      ? Colors.red.shade50 
+                      : _result.contains('SAMA') 
+                          ? Colors.amber.shade50 
+                          : Colors.green.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: _result.contains('⚠️') 
+                        ? Colors.red.shade300 
+                        : _result.contains('SAMA') 
+                            ? Colors.amber.shade300 
+                            : Colors.green.shade300,
+                  ),
+                ),
+                child: SingleChildScrollView(
+                  child: Text(
+                    _result,
+                    style: const TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 14,
+                      height: 1.6,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ============ DISKON NESTED IF PAGE ============
+class DiskonNestedIfPage extends StatefulWidget {
+  const DiskonNestedIfPage({super.key});
+
+  @override
+  State<DiskonNestedIfPage> createState() => _DiskonNestedIfPageState();
+}
+
+class _DiskonNestedIfPageState extends State<DiskonNestedIfPage> {
+  final _pembelianController = TextEditingController();
+  String _result = '';
+
+  void _calculate() {
+    final pembelian = double.tryParse(_pembelianController.text);
+
+    if (pembelian != null && pembelian > 0) {
+      setState(() {
+        double diskon = 0;
+        double diskonPersen = 0;
+        String kategori = '';
+
+        // ===== NESTED IF UNTUK MENENTUKAN DISKON =====
+        if (pembelian >= 1500000) {
+          diskonPersen = 0.30;
+          kategori = '🏆 Platinum (≥ Rp 1.500.000)';
+        } else {
+          if (pembelian >= 1000000) {
+            diskonPersen = 0.20;
+            kategori = '🥇 Gold (Rp 1.000.000 - Rp 1.499.999)';
+          } else {
+            if (pembelian >= 500000) {
+              diskonPersen = 0.10;
+              kategori = '🥈 Silver (Rp 500.000 - Rp 999.999)';
+            } else {
+              diskonPersen = 0.00;
+              kategori = '🥉 Bronze (< Rp 500.000)';
+            }
+          }
+        }
+
+        diskon = pembelian * diskonPersen;
+        final totalBayar = pembelian - diskon;
+
+        _result = '''
+═══════════════════════════════════════
+        📋 STRUK PEMBELANJAAN
+═══════════════════════════════════════
+💰 Total Pembelian : Rp ${_formatRupiah(pembelian)}
+🏷️  Kategori        : $kategori
+───────────────────────────────────────
+🎯 Diskon          : ${(diskonPersen * 100).toStringAsFixed(0)}%
+💸 Nilai Diskon    : Rp ${_formatRupiah(diskon)}
+───────────────────────────────────────
+✅ TOTAL BAYAR     : Rp ${_formatRupiah(totalBayar)}
+═══════════════════════════════════════
+''';
+      });
+    } else {
+      setState(() {
+        _result = '⚠️ Masukkan jumlah pembelian yang valid (minimal Rp 1)!';
+      });
+    }
+  }
+
+  String _formatRupiah(double value) {
+    return value.toStringAsFixed(0).replaceAllMapped(
+      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+      (Match match) => '${match[1]}.',
+    );
+  }
+
+  void _reset() {
+    _pembelianController.clear();
+    setState(() {
+      _result = '';
+    });
+  }
+
+  @override
+  void dispose() {
+    _pembelianController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Diskon Bertingkat (Nested IF)"),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _reset,
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade50,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.orange.shade200),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '📌 Aturan Diskon (Nested IF):',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  const SizedBox(height: 6),
+                  _buildRuleItem('≥ Rp 1.500.000', 'Diskon 30%', Colors.green),
+                  _buildRuleItem('Rp 1.000.000 - Rp 1.499.999', 'Diskon 20%', Colors.blue),
+                  _buildRuleItem('Rp 500.000 - Rp 999.999', 'Diskon 10%', Colors.amber),
+                  _buildRuleItem('< Rp 500.000', 'Diskon 0%', Colors.grey),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            TextField(
+              controller: _pembelianController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Jumlah Pembelian (Rp)',
+                hintText: 'Contoh: 750000',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.money),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _calculate,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Hitung Diskon', style: TextStyle(fontSize: 16)),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: _reset,
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Reset', style: TextStyle(fontSize: 16)),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            if (_result.isNotEmpty)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: _result.contains('⚠️') 
+                          ? Colors.red.shade50 
+                          : Colors.green.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: _result.contains('⚠️') 
+                            ? Colors.red.shade300 
+                            : Colors.green.shade300,
+                      ),
+                    ),
+                    child: Text(
+                      _result,
+                      style: const TextStyle(
+                        fontFamily: 'monospace',
+                        fontSize: 14,
+                        height: 1.8,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRuleItem(String range, String diskon, Color color) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        children: [
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text('$range → ', style: const TextStyle(fontSize: 13)),
+          Text(
+            diskon,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ============ DISKON SWITCH-CASE PAGE ============
+class DiskonSwitchCasePage extends StatefulWidget {
+  const DiskonSwitchCasePage({super.key});
+
+  @override
+  State<DiskonSwitchCasePage> createState() => _DiskonSwitchCasePageState();
+}
+
+class _DiskonSwitchCasePageState extends State<DiskonSwitchCasePage> {
+  final _pembelianController = TextEditingController();
+  String _result = '';
+
+  // Fungsi untuk menentukan level diskon menggunakan Switch-Case
+  String _getDiscountLevel(double pembelian) {
+    // Konversi ke integer untuk Switch-Case
+    int level;
+    if (pembelian >= 1500000) {
+      level = 4;
+    } else if (pembelian >= 1000000) {
+      level = 3;
+    } else if (pembelian >= 500000) {
+      level = 2;
+    } else {
+      level = 1;
+    }
+
+    // ===== SWITCH-CASE UNTUK MENENTUKAN DISKON =====
+    switch (level) {
+      case 4:
+        return 'PLATINUM';
+      case 3:
+        return 'GOLD';
+      case 2:
+        return 'SILVER';
+      case 1:
+        return 'BRONZE';
+      default:
+        return 'BRONZE';
+    }
+  }
+
+  double _getDiscountPercentage(String level) {
+    switch (level) {
+      case 'PLATINUM':
+        return 0.30;
+      case 'GOLD':
+        return 0.20;
+      case 'SILVER':
+        return 0.10;
+      case 'BRONZE':
+        return 0.00;
+      default:
+        return 0.00;
+    }
+  }
+
+  String _getLevelIcon(String level) {
+    switch (level) {
+      case 'PLATINUM':
+        return '👑';
+      case 'GOLD':
+        return '🥇';
+      case 'SILVER':
+        return '🥈';
+      case 'BRONZE':
+        return '🥉';
+      default:
+        return '⭐';
+    }
+  }
+
+  String _getLevelDescription(String level) {
+    switch (level) {
+      case 'PLATINUM':
+        return '≥ Rp 1.500.000';
+      case 'GOLD':
+        return 'Rp 1.000.000 - Rp 1.499.999';
+      case 'SILVER':
+        return 'Rp 500.000 - Rp 999.999';
+      case 'BRONZE':
+        return '< Rp 500.000';
+      default:
+        return '-';
+    }
+  }
+
+  void _calculate() {
+    final pembelian = double.tryParse(_pembelianController.text);
+
+    if (pembelian != null && pembelian > 0) {
+      setState(() {
+
+        // Menggunakan Switch-Case melalui fungsi
+        final level = _getDiscountLevel(pembelian);
+        final diskonPersen = _getDiscountPercentage(level);
+        final icon = _getLevelIcon(level);
+        final deskripsi = _getLevelDescription(level);
+        final diskon = pembelian * diskonPersen;
+        final totalBayar = pembelian - diskon;
+
+        _result = '''
+═══════════════════════════════════════
+        📋 STRUK PEMBELANJAAN
+        (Switch-Case)
+═══════════════════════════════════════
+💰 Total Pembelian : Rp ${_formatRupiah(pembelian)}
+🏷️  Level          : $icon $level
+📌 Syarat         : $deskripsi
+───────────────────────────────────────
+🎯 Diskon          : ${(diskonPersen * 100).toStringAsFixed(0)}%
+💸 Nilai Diskon    : Rp ${_formatRupiah(diskon)}
+───────────────────────────────────────
+✅ TOTAL BAYAR     : Rp ${_formatRupiah(totalBayar)}
+═══════════════════════════════════════
+''';
+      });
+    } else {
+      setState(() {
+        _result = '⚠️ Masukkan jumlah pembelian yang valid (minimal Rp 1)!';
+      });
+    }
+  }
+
+  String _formatRupiah(double value) {
+    return value.toStringAsFixed(0).replaceAllMapped(
+      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+      (Match match) => '${match[1]}.',
+    );
+  }
+
+  void _reset() {
+    _pembelianController.clear();
+    setState(() {
+      _result = '';
+    });
+  }
+
+  @override
+  void dispose() {
+    _pembelianController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Diskon Switch-Case"),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _reset,
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.purple.shade50,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.purple.shade200),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '📌 Level Diskon (Switch-Case):',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  const SizedBox(height: 6),
+                  _buildLevelItem('👑 PLATINUM', '≥ Rp 1.500.000', '30%', Colors.green),
+                  _buildLevelItem('🥇 GOLD', 'Rp 1.000.000 - Rp 1.499.999', '20%', Colors.blue),
+                  _buildLevelItem('🥈 SILVER', 'Rp 500.000 - Rp 999.999', '10%', Colors.amber),
+                  _buildLevelItem('🥉 BRONZE', '< Rp 500.000', '0%', Colors.grey),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            TextField(
+              controller: _pembelianController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Jumlah Pembelian (Rp)',
+                hintText: 'Contoh: 750000',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.money),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _calculate,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Hitung Diskon', style: TextStyle(fontSize: 16)),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: _reset,
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Reset', style: TextStyle(fontSize: 16)),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            if (_result.isNotEmpty)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: _result.contains('⚠️') 
+                          ? Colors.red.shade50 
+                          : Colors.purple.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: _result.contains('⚠️') 
+                            ? Colors.red.shade300 
+                            : Colors.purple.shade300,
+                      ),
+                    ),
+                    child: Text(
+                      _result,
+                      style: const TextStyle(
+                        fontFamily: 'monospace',
+                        fontSize: 14,
+                        height: 1.8,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLevelItem(String level, String range, String diskon, Color color) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        children: [
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text('$level: ', style: const TextStyle(fontSize: 13)),
+          Text(
+            range,
+            style: const TextStyle(fontSize: 13),
+          ),
+          const Spacer(),
+          Text(
+            diskon,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
