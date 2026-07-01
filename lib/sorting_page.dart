@@ -41,8 +41,9 @@ class _SortingPageState extends State<SortingPage> {
     });
 
     List<String> tempList = List.from(list);
-    if (_selectedAlgorithm == 'Bubble Sort') _bubbleSort(tempList);
-    else if (_selectedAlgorithm == 'Selection Sort') _selectionSort(tempList);
+    if (_selectedAlgorithm == 'Bubble Sort') {
+      _bubbleSort(tempList);
+    } else if (_selectedAlgorithm == 'Selection Sort') _selectionSort(tempList);
     else if (_selectedAlgorithm == 'Insertion Sort') _insertionSort(tempList);
     else if (_selectedAlgorithm == 'Merge Sort') _runMergeSort(tempList);
     else if (_selectedAlgorithm == 'Quick Sort') _runQuickSort(tempList);
@@ -66,8 +67,12 @@ class _SortingPageState extends State<SortingPage> {
     return a.toLowerCase().compareTo(b.toLowerCase());
   }
   bool _shouldSwap(String a, String b) => _isAscending ? _compare(a, b) > 0 : _compare(a, b) < 0;
-  void _bubbleSort(List<String> l) { for (int i = 0; i < l.length-1; i++) for (int j = 0; j < l.length-i-1; j++) if (_shouldSwap(l[j], l[j+1])) { String t = l[j]; l[j]=l[j+1]; l[j+1]=t; } }
-  void _selectionSort(List<String> l) { for (int i = 0; i < l.length-1; i++) { int m = i; for (int j = i+1; j < l.length; j++) if (_shouldSwap(l[m], l[j])) m = j; String t = l[m]; l[m]=l[i]; l[i]=t; } }
+  void _bubbleSort(List<String> l) { for (int i = 0; i < l.length-1; i++) for (int j = 0; j < l.length-i-1; j++) {
+    if (_shouldSwap(l[j], l[j+1])) { String t = l[j]; l[j]=l[j+1]; l[j+1]=t; }
+  } }
+  void _selectionSort(List<String> l) { for (int i = 0; i < l.length-1; i++) { int m = i; for (int j = i+1; j < l.length; j++) {
+    if (_shouldSwap(l[m], l[j])) m = j;
+  } String t = l[m]; l[m]=l[i]; l[i]=t; } }
   void _insertionSort(List<String> l) { for (int i = 1; i < l.length; i++) { String k = l[i]; int j = i-1; while (j >= 0 && _shouldSwap(l[j], k)) { l[j+1]=l[j]; j--; } l[j+1]=k; } }
   void _runMergeSort(List<String> l) { _mS(l, 0, l.length-1); }
   void _mS(List<String> l, int lo, int hi) { if (lo<hi) { int m = (lo+hi)~/2; _mS(l, lo, m); _mS(l, m+1, hi); _merge(l, lo, m, hi); } }
@@ -82,7 +87,9 @@ class _SortingPageState extends State<SortingPage> {
   void _qS(List<String> l, int lo, int hi) { if (lo<hi) { int p = _partition(l, lo, hi); _qS(l, lo, p-1); _qS(l, p+1, hi); } }
   int _partition(List<String> l, int lo, int hi) {
     String p = l[hi]; int i = lo-1;
-    for(int j=lo; j<hi; j++) if(!_shouldSwap(l[j], p)) { i++; String t=l[i]; l[i]=l[j]; l[j]=t; }
+    for(int j=lo; j<hi; j++) {
+      if(!_shouldSwap(l[j], p)) { i++; String t=l[i]; l[i]=l[j]; l[j]=t; }
+    }
     String t=l[i+1]; l[i+1]=l[hi]; l[hi]=t; return i+1;
   }
 
