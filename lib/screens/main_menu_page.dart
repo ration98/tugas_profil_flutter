@@ -36,7 +36,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
       appBar: AppBar(
         title: const Text("Kelompok 8 - Mobile Programming"),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: const Color(0xFF00BFFF),
         foregroundColor: Colors.white,
         actions: [
           IconButton(

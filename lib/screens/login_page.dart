@@ -42,6 +42,20 @@ class _LoginPageState extends State<LoginPage> {
       if (result != null) {
         final user = User.fromMap(result);
         
+        // Pengecekan status_valid (Hanya status Aktif/1 yang bisa login)
+        if (user.idStatusValid != 1) {
+          setState(() {
+            if (user.idStatusValid == 2) {
+              _errorMessage = 'Akun Anda tidak aktif!';
+            } else if (user.idStatusValid == 3) {
+              _errorMessage = 'Akun Anda sedang ditangguhkan (pending)!';
+            } else {
+              _errorMessage = 'Status akun Anda tidak valid!';
+            }
+          });
+          return;
+        }
+
         // Simpan data user ke session atau shared preferences jika diperlukan
         // Navigator ke halaman utama dengan data user
         if (mounted) {
@@ -86,8 +100,8 @@ class _LoginPageState extends State<LoginPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.green.shade700,
-              Colors.green.shade300,
+              const Color(0xFF00BFFF),
+              Colors.white,
             ],
           ),
         ),
@@ -109,13 +123,13 @@ class _LoginPageState extends State<LoginPage> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.green.shade50,
+                        color: const Color(0xFFE0F7FF),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         Icons.person_4,
                         size: 64,
-                        color: Colors.green.shade700,
+                        color: const Color(0xFF00BFFF),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -125,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green.shade800,
+                        color: const Color(0xFF0080B3),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -145,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         labelText: 'Username',
                         hintText: 'Masukkan username',
-                        prefixIcon: Icon(Icons.person, color: Colors.green.shade700),
+                        prefixIcon: Icon(Icons.person, color: const Color(0xFF00BFFF)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -155,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.green.shade700),
+                          borderSide: BorderSide(color: const Color(0xFF00BFFF)),
                         ),
                         filled: true,
                         fillColor: Colors.grey.shade50,
@@ -170,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         labelText: 'Password',
                         hintText: 'Masukkan password',
-                        prefixIcon: Icon(Icons.lock, color: Colors.green.shade700),
+                        prefixIcon: Icon(Icons.lock, color: const Color(0xFF00BFFF)),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscurePassword ? Icons.visibility : Icons.visibility_off,
@@ -191,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.green.shade700),
+                          borderSide: BorderSide(color: const Color(0xFF00BFFF)),
                         ),
                         filled: true,
                         fillColor: Colors.grey.shade50,
@@ -230,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
                     ElevatedButton(
                       onPressed: _isLoading ? null : _login,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green.shade700,
+                        backgroundColor: const Color(0xFF00BFFF),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
